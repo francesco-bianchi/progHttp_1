@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital@1&display=swap');
+.rubik{
+    font-family: 'Rubik', sans-serif;
+}
+.roboto{
+    font-family: 'Roboto Condensed', sans-serif;
+}
+.accessori:hover{
+    background-color:rgb(8, 8, 8);
+}
+.accessori:active{
+    background-color:rgb(255, 252, 252);
+}
+.visited{
+    text-decoration: none;
+}
+/*vestiti*/
+.altCarousel{
+    height: 450px;
+}
+.altezzacard{
+    height: 650px;
+}
+.img{
+    height: 450px;
+}
+/*accessori*/
+.imgAcc{
+    height: 300px;
+}
+.cardAcc{
+    height: 450px;
+}
+/*footer*/
+.imgsocial{
+    height: 50px;
+    width: 50px;
+}
+.imgsocial:hover{
+    opacity: 0.7;
+}
+.imgpagamento{
+    height: 60px;
+    width: 70px;
+    opacity: 0.5;
+}
+.imgpagamento:hover{
+    opacity: 1;
+}

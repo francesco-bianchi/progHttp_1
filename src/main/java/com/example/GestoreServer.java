@@ -35,13 +35,18 @@ public class GestoreServer extends Thread {
                     header = in.readLine();
                     System.out.println(header);
                 } while (!header.isEmpty());
+
+                if(resource.equals("/")){
+                    resource = "index.html";
+                }
                 
+                File file = new File("htdocs/" + resource);
                 
-                if (resource.equals("/index.html") || resource.equals("/")) {
-                    File file = new File("htdocs/index.html");
+
+                if (file.exists()) {
                     out.writeBytes("HTTP/1.1 200 OK\r\n");
                     out.writeBytes("Content-Length: " + file.length() + "\r\n");
-                    out.writeBytes("Content-Type: text/html\r\n");
+                    out.writeBytes("Content-Type: " + getContentType(file) + "\r\n");
                     out.writeBytes("\r\n");
 
                     InputStream input = new FileInputStream(file);
@@ -67,8 +72,31 @@ public class GestoreServer extends Thread {
             s.close();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
     }
+    private static String getContentType(File f){
+        String[] s = f.getName().split("\\.");
+        String ext = s[s.length -1];
+        switch (ext) {
+            case "html":
+                return "text/html";
+            case "htm":
+                return "text/html";
+            case "png":
+                return "image/png";
+            case "jpeg":
+                return "image/jpeg";
+            case "css":
+                return "text/css";
+            case "js":
+                return "application/javascript";
+        
+            default:
+                return "";
+        }
+    }
+    
 }
+
