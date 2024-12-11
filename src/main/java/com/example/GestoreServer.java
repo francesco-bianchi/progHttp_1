@@ -2,7 +2,10 @@ package com.example;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
@@ -21,6 +24,7 @@ public class GestoreServer extends Thread {
             do {
                 String header;
                 String firstLine = in.readLine();
+                System.out.println(firstLine);
                 String[] ricIniziale = firstLine.split(" ");
 
                 String method = ricIniziale[0];
@@ -29,16 +33,25 @@ public class GestoreServer extends Thread {
 
                 do {
                     header = in.readLine();
+                    System.out.println(header);
                 } while (!header.isEmpty());
                 
                 
                 if (resource.equals("/index.html") || resource.equals("/")) {
-                    String responseBody = "<html><body><b>Benvenuto nella mia pagina<b></body></html>";
+                    File file = new File("htdocs/index.html");
                     out.writeBytes("HTTP/1.1 200 OK\r\n");
-                    out.writeBytes("Content-Length: " + responseBody.length() + "\r\n");
+                    out.writeBytes("Content-Length: " + file.length() + "\r\n");
                     out.writeBytes("Content-Type: text/html\r\n");
                     out.writeBytes("\r\n");
-                    out.writeBytes(responseBody);
+
+                    InputStream input = new FileInputStream(file);
+                    byte[] buf = new byte[8192];
+                    int n;
+                    while((n = input.read(buf)) != -1){
+                        out.write(buf, 0, n);
+                    }
+                    input.close();
+                    
                     break;
                 }
                 else{
@@ -51,6 +64,7 @@ public class GestoreServer extends Thread {
                     break;
                 }
             } while (true);
+            s.close();
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
