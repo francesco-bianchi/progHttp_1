@@ -23,24 +23,25 @@ public class GestoreServer extends Thread {
 
             do {
                 String header;
-                String firstLine = in.readLine();
+                String firstLine = in.readLine(); // controllo la richiesta
                 System.out.println(firstLine);
                 String[] ricIniziale = firstLine.split(" ");
 
+                //la divido nelle sue tre parti
                 String method = ricIniziale[0];
                 String resource = ricIniziale[1];
                 String version = ricIniziale[2];
 
                 do {
-                    header = in.readLine();
+                    header = in.readLine(); // se è  stata fatta una richiesta l'header conterrà qualcosa ed esce dal while
                     System.out.println(header);
                 } while (!header.isEmpty());
 
-                if(resource.equals("/")){
+                if(resource.equals("/")){ // gestisco mandandolo alla index se non è stato inserito nulla dopo il get
                     resource = "index.html";
                 }
                 
-                File file = new File("htdocs/" + resource);
+                File file = new File("htdocs/" + resource); // trovo il file
                 
 
                 if (file.exists()) {
@@ -49,7 +50,7 @@ public class GestoreServer extends Thread {
                     out.writeBytes("Content-Type: " + getContentType(file) + "\r\n");
                     out.writeBytes("\r\n");
 
-                    InputStream input = new FileInputStream(file);
+                    InputStream input = new FileInputStream(file); // leggo il file
                     byte[] buf = new byte[8192];
                     int n;
                     while((n = input.read(buf)) != -1){
@@ -60,7 +61,7 @@ public class GestoreServer extends Thread {
                     break;
                 }
                 else{
-                    String responseBody = "<html><body><b>File non trovato<b></body></html>";
+                    String responseBody = "<html><body><b>File non trovato<b></body></html>"; // pagina per i file non trovati
                     out.writeBytes("HTTP/1.1 404 Not found\r\n");
                     out.writeBytes("Content-Length: " + responseBody.length() + "\r\n");
                     out.writeBytes("Content-Type: text/html\r\n");
@@ -76,7 +77,7 @@ public class GestoreServer extends Thread {
         }
         
     }
-    private static String getContentType(File f){
+    private static String getContentType(File f){ // controllo le estensioni
         String[] s = f.getName().split("\\.");
         String ext = s[s.length -1];
         switch (ext) {
